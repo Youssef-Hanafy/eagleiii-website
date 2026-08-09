@@ -1,0 +1,3 @@
+import { ProductCard } from '@/components/ProductCard';
+import { getProducts } from '@/lib/data';
+export default async function ProductsPage() { const products=await getProducts(); return <section className="page-section"><div className="shell"><div className="page-hero"><div className="eyebrow dark">PRODUCT CATALOG</div><h1>Bulk herbs, seeds & botanicals.</h1><p>Our products are sourced from Egypt and offered for wholesale and commercial purchasing. Contact us for current availability, specifications, packaging, and quotations.</p></div><div className="products-grid">{products.map(p=><ProductCard key={p.id} product={p}/>)}</div></div></section>; }

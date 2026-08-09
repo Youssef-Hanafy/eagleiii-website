@@ -1,0 +1,3 @@
+'use server'; import { createClient } from '@/lib/supabase/server'; import { revalidatePath } from 'next/cache';
+export async function updateInquiryStatus(formData:FormData){const s=await createClient(); const id=String(formData.get('id')||''); const status=String(formData.get('status')||'new'); if(!['new','contacted','closed'].includes(status))return; await s.from('inquiries').update({status}).eq('id',id); revalidatePath('/admin/inquiries'); revalidatePath('/admin');}
+export async function deleteInquiry(formData:FormData){const s=await createClient();await s.from('inquiries').delete().eq('id',String(formData.get('id')||''));revalidatePath('/admin/inquiries');revalidatePath('/admin');}
