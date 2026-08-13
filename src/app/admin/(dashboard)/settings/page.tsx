@@ -1,2 +1,175 @@
-import { createClient } from '@/lib/supabase/server'; import { defaultSettings } from '@/lib/default-data'; import { saveSettings } from './actions';
-export default async function Settings({searchParams}:{searchParams:Promise<{saved?:string;error?:string}>}){const [q,s]=await Promise.all([searchParams,createClient()]);const {data}=await s.from('site_settings').select('*').eq('id',1).single();const x={...defaultSettings,...(data||{})};return <><div className="admin-heading"><div><small>WEBSITE</small><h1>Website settings</h1><p className="admin-muted">Change the business name, homepage text, contact information, and social links.</p></div></div>{q.saved&&<div className="success-box">Website settings saved.</div>}{q.error&&<div className="error-box">Could not save settings.</div>}<form action={saveSettings} className="admin-form"><div className="admin-form-section"><div className="form-section-heading"><div><small>BUSINESS</small><h2>Company information</h2></div></div><div className="form-row"><label>Company Name<input name="company_name" defaultValue={x.company_name}/></label><label>Tagline<input name="tagline" defaultValue={x.tagline}/></label></div><label>Business Address<input name="address" defaultValue={x.address}/></label></div><div className="admin-form-section"><div className="form-section-heading"><div><small>HOMEPAGE</small><h2>Hero & about text</h2></div></div><label>Small Eyebrow Text<input name="hero_eyebrow" defaultValue={x.hero_eyebrow}/></label><div className="form-row"><label>Main Headline<input name="hero_title" defaultValue={x.hero_title}/></label><label>Accent Headline<input name="hero_accent" defaultValue={x.hero_accent}/></label></div><label>Homepage Description<textarea name="hero_description" rows={4} defaultValue={x.hero_description}/></label><label>About Page Headline<input name="about_title" defaultValue={x.about_title}/></label><label>About Text<textarea name="about_text" rows={6} defaultValue={x.about_text}/></label></div><div className="admin-form-section"><div className="form-section-heading"><div><small>CONTACT</small><h2>Contact information</h2></div></div><div className="form-row"><label>Email<input name="email" type="email" defaultValue={x.email}/></label><label>Phone<input name="phone" defaultValue={x.phone}/></label></div><label>WhatsApp<input name="whatsapp" defaultValue={x.whatsapp}/></label></div><div className="admin-form-section"><div className="form-section-heading"><div><small>SOCIAL</small><h2>Social links</h2></div></div><div className="form-row"><label>Facebook URL<input name="facebook_url" defaultValue={x.facebook_url}/></label><label>Messenger URL<input name="messenger_url" defaultValue={x.messenger_url}/></label></div><div className="form-row"><label>Instagram URL<input name="instagram_url" defaultValue={x.instagram_url}/></label><label>LinkedIn URL<input name="linkedin_url" defaultValue={x.linkedin_url}/></label></div></div><div className="admin-form-actions"><button className="button button-dark" type="submit">Save Website Settings</button></div></form></>}
+import { createClient } from '@/lib/supabase/server';
+import { defaultSettings } from '@/lib/default-data';
+import { saveSettings } from './actions';
+
+export default async function Settings({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string; error?: string }>;
+}) {
+  const [q, s] = await Promise.all([searchParams, createClient()]);
+  const { data } = await s.from('site_settings').select('*').eq('id', 1).single();
+  const x = { ...defaultSettings, ...(data || {}) };
+
+  return (
+    <>
+      <div className="admin-heading">
+        <div>
+          <small>WEBSITE</small>
+          <h1>Website settings</h1>
+          <p className="admin-muted">
+            Change the logo, business name, homepage text, contact information, and social links.
+          </p>
+        </div>
+      </div>
+
+      {q.saved && <div className="success-box">Website settings saved.</div>}
+      {q.error === 'upload' && <div className="error-box">Logo upload failed. Try a PNG, JPG, or WebP under 5 MB.</div>}
+      {q.error && q.error !== 'upload' && <div className="error-box">Could not save settings.</div>}
+
+      <form action={saveSettings} className="admin-form">
+        <div className="admin-form-section">
+          <div className="form-section-heading">
+            <div>
+              <small>BRANDING</small>
+              <h2>Business logo</h2>
+            </div>
+          </div>
+
+          {x.logo_url ? (
+            <div className="admin-logo-preview-wrap">
+              <img className="admin-logo-preview" src={x.logo_url} alt={`${x.company_name} logo`} />
+              <span>Current logo</span>
+            </div>
+          ) : (
+            <p className="admin-muted">No logo uploaded yet. The website currently uses the default “E” mark.</p>
+          )}
+
+          <label>
+            Upload / Replace Logo
+            <input name="logo" type="file" accept="image/jpeg,image/png,image/webp" />
+          </label>
+          <p className="field-help">
+            PNG with a transparent background is usually best. Maximum file size: 5 MB.
+          </p>
+        </div>
+
+        <div className="admin-form-section">
+          <div className="form-section-heading">
+            <div>
+              <small>BUSINESS</small>
+              <h2>Company information</h2>
+            </div>
+          </div>
+          <div className="form-row">
+            <label>
+              Company Name
+              <input name="company_name" defaultValue={x.company_name} />
+            </label>
+            <label>
+              Tagline
+              <input name="tagline" defaultValue={x.tagline} />
+            </label>
+          </div>
+          <label>
+            Business Address
+            <input name="address" defaultValue={x.address} />
+          </label>
+        </div>
+
+        <div className="admin-form-section">
+          <div className="form-section-heading">
+            <div>
+              <small>HOMEPAGE</small>
+              <h2>Hero & about text</h2>
+            </div>
+          </div>
+          <label>
+            Small Eyebrow Text
+            <input name="hero_eyebrow" defaultValue={x.hero_eyebrow} />
+          </label>
+          <div className="form-row">
+            <label>
+              Main Headline
+              <input name="hero_title" defaultValue={x.hero_title} />
+            </label>
+            <label>
+              Accent Headline
+              <input name="hero_accent" defaultValue={x.hero_accent} />
+            </label>
+          </div>
+          <label>
+            Homepage Description
+            <textarea name="hero_description" rows={4} defaultValue={x.hero_description} />
+          </label>
+          <label>
+            About Page Headline
+            <input name="about_title" defaultValue={x.about_title} />
+          </label>
+          <label>
+            About Text
+            <textarea name="about_text" rows={6} defaultValue={x.about_text} />
+          </label>
+        </div>
+
+        <div className="admin-form-section">
+          <div className="form-section-heading">
+            <div>
+              <small>CONTACT</small>
+              <h2>Contact information</h2>
+            </div>
+          </div>
+          <div className="form-row">
+            <label>
+              Email
+              <input name="email" type="email" defaultValue={x.email} />
+            </label>
+            <label>
+              Phone
+              <input name="phone" defaultValue={x.phone} />
+            </label>
+          </div>
+          <label>
+            WhatsApp
+            <input name="whatsapp" defaultValue={x.whatsapp} />
+          </label>
+        </div>
+
+        <div className="admin-form-section">
+          <div className="form-section-heading">
+            <div>
+              <small>SOCIAL</small>
+              <h2>Social links</h2>
+            </div>
+          </div>
+          <div className="form-row">
+            <label>
+              Facebook URL
+              <input name="facebook_url" defaultValue={x.facebook_url} />
+            </label>
+            <label>
+              Messenger URL
+              <input name="messenger_url" defaultValue={x.messenger_url} />
+            </label>
+          </div>
+          <div className="form-row">
+            <label>
+              Instagram URL
+              <input name="instagram_url" defaultValue={x.instagram_url} />
+            </label>
+            <label>
+              LinkedIn URL
+              <input name="linkedin_url" defaultValue={x.linkedin_url} />
+            </label>
+          </div>
+        </div>
+
+        <div className="admin-form-actions">
+          <button className="button button-dark" type="submit">
+            Save Website Settings
+          </button>
+        </div>
+      </form>
+    </>
+  );
+}

@@ -87,6 +87,8 @@ create table if not exists public.site_settings (
   instagram_url text,
   linkedin_url text,
   address text,
+  logo_url text,
+  logo_path text,
   updated_at timestamptz not null default now()
 );
 
@@ -148,7 +150,8 @@ create policy "Admins update settings" on public.site_settings for update to aut
 -- Public buckets: files are intentionally public once uploaded, but only admins may upload/change them.
 insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types)
 values ('product-images','product-images',true,10485760,array['image/jpeg','image/png','image/webp']),
-       ('product-files','product-files',true,20971520,array['application/pdf'])
+       ('product-files','product-files',true,20971520,array['application/pdf']),
+       ('site-assets','site-assets',true,5242880,array['image/jpeg','image/png','image/webp'])
 on conflict (id) do update set public=excluded.public, file_size_limit=excluded.file_size_limit, allowed_mime_types=excluded.allowed_mime_types;
 
 create policy "Admins upload product images" on storage.objects for insert to authenticated with check (bucket_id='product-images' and public.is_admin());
@@ -160,6 +163,11 @@ create policy "Admins upload product files" on storage.objects for insert to aut
 create policy "Admins update product files" on storage.objects for update to authenticated using (bucket_id='product-files' and public.is_admin()) with check (bucket_id='product-files' and public.is_admin());
 create policy "Admins delete product files" on storage.objects for delete to authenticated using (bucket_id='product-files' and public.is_admin());
 create policy "Admins read product file rows" on storage.objects for select to authenticated using (bucket_id='product-files' and public.is_admin());
+
+create policy "Admins upload site assets" on storage.objects for insert to authenticated with check (bucket_id='site-assets' and public.is_admin());
+create policy "Admins update site assets" on storage.objects for update to authenticated using (bucket_id='site-assets' and public.is_admin()) with check (bucket_id='site-assets' and public.is_admin());
+create policy "Admins delete site assets" on storage.objects for delete to authenticated using (bucket_id='site-assets' and public.is_admin());
+create policy "Admins read site asset rows" on storage.objects for select to authenticated using (bucket_id='site-assets' and public.is_admin());
 
 -- IMPORTANT: after creating your dad's Auth user in Supabase, run this separately with the real email:
 -- insert into public.admin_users(user_id,email)

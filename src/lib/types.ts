@@ -48,6 +48,8 @@ export type SiteSettings = {
   instagram_url: string;
   linkedin_url: string;
   address: string;
+  logo_url: string;
+  logo_path: string;
 };
 
 export type Inquiry = {

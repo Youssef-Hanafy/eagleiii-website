@@ -15,8 +15,24 @@ export async function Footer() {
     <footer className="footer">
       <div className="shell footer-grid">
         <div>
-          <div className="brand footer-brand"><span className="brand-mark">E</span><span><strong>{s.company_name}</strong><small>{s.tagline}</small></span></div>
-          <p className="footer-copy">Premium dried herbs, seeds, and botanicals sourced from Egypt for wholesale and commercial buyers.</p>
+          <div className="brand footer-brand">
+            {s.logo_url ? (
+              <img
+                className="brand-logo-image footer-logo-image"
+                src={s.logo_url}
+                alt={`${s.company_name} logo`}
+              />
+            ) : (
+              <span className="brand-mark">E</span>
+            )}
+            <span>
+              <strong>{s.company_name}</strong>
+              <small>{s.tagline}</small>
+            </span>
+          </div>
+          <p className="footer-copy">
+            Premium dried herbs, seeds, and botanicals sourced from Egypt for wholesale and commercial buyers.
+          </p>
         </div>
         <div>
           <h3>Navigate</h3>
@@ -29,13 +45,22 @@ export async function Footer() {
           <h3>Contact</h3>
           {s.email && <a href={emailHref(s.email)}>Email: {s.email}</a>}
           {s.phone && <a href={phoneHref(s.phone)}>Phone: {s.phone}</a>}
-          {s.whatsapp && <a href={whatsappHref(s.whatsapp)} target="_blank" rel="noreferrer">WhatsApp: {s.whatsapp}</a>}
+          {s.whatsapp && (
+            <a href={whatsappHref(s.whatsapp)} target="_blank" rel="noreferrer">
+              WhatsApp: {s.whatsapp}
+            </a>
+          )}
           {socialLinks.map((item) => (
-            <a key={item.label} href={externalHref(item.value)} target="_blank" rel="noreferrer">{item.label}</a>
+            <a key={item.label} href={externalHref(item.value)} target="_blank" rel="noreferrer">
+              {item.label}
+            </a>
           ))}
         </div>
       </div>
-      <div className="shell footer-bottom"><span>© 2026 {s.company_name}. All rights reserved.</span><Link href="/admin/login">Admin</Link></div>
+      <div className="shell footer-bottom">
+        <span>© 2026 {s.company_name}. All rights reserved.</span>
+        <Link href="/admin/login">Admin</Link>
+      </div>
     </footer>
   );
 }

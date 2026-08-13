@@ -17,7 +17,9 @@ export const defaultSettings: SiteSettings = {
   messenger_url: '',
   instagram_url: '',
   linkedin_url: '',
-  address: ''
+  address: '',
+  logo_url: '',
+  logo_path: ''
 };
 
 const base = (id:string, slug:string, name:string, category:string, form:string, featured=false): Product => ({

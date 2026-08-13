@@ -38,6 +38,8 @@ button, input, textarea { font: inherit; }
   display: grid; place-items: center;
   background: var(--forest); color: white; font-family: Georgia, serif; font-size: 22px;
 }
+.brand-logo-image { width: 52px; height: 46px; object-fit: contain; display: block; flex: 0 0 auto; }
+.footer-logo-image { background: rgba(255,255,255,.94); border-radius: 6px; padding: 4px; }
 .brand span:last-child { display: grid; line-height: 1; gap: 5px; }
 .brand strong { letter-spacing: .11em; font-size: 12px; }
 .brand small { color: var(--muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
@@ -225,3 +227,6 @@ button, input, textarea { font: inherit; }
 
 /* Clickable contact and social links */
 .contact-link-row{display:flex!important;grid-template-columns:none!important;align-items:center;justify-content:space-between;gap:18px;padding:18px 0;border-bottom:1px solid var(--line);transition:.2s ease}.contact-link-row:first-child{border-top:0}.contact-link-row>span{display:grid;gap:8px}.contact-link-row b{font-size:18px;font-weight:400;color:var(--forest);transition:.2s ease}.contact-link-row:hover strong{color:var(--forest)}.contact-link-row:hover b{transform:translate(2px,-2px)}.social-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}.social-links a{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:white;padding:11px 14px;border-radius:5px;font-size:11px;font-weight:800;transition:.2s ease}.social-links a:hover{border-color:var(--forest);color:var(--forest);transform:translateY(-1px)}.footer a{transition:.2s ease}.footer a:hover{color:#ffffff}
+
+/* Business logo upload */
+.admin-logo-preview-wrap{display:flex;align-items:center;gap:16px;padding:18px;background:#fafaf7;border:1px solid var(--line)}.admin-logo-preview{width:180px;height:110px;object-fit:contain;background:white;border:1px solid var(--line);padding:10px}.admin-logo-preview-wrap span{font-size:11px;color:var(--muted);font-weight:700}
